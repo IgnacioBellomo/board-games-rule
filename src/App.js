@@ -5,7 +5,7 @@ import HomePage from './components/HomePage';
 import TestAPIResults from './testAPIResults';
 import {Switch, Route} from 'react-router-dom';
 import NavBar from './components/NavBar';
-import BoardGame from './components/BoardGame';
+import BoardGameSearch from './components/BoardGameSearch';
 
 function App() {
 
@@ -20,7 +20,7 @@ function App() {
         <HomePage/>}/>
 
         <Route exact path="/games/:id" render = {(props)=>
-        <BoardGame
+        <BoardGameSearch
           {...props}
         />}/>
       </Switch>

@@ -70,7 +70,7 @@ export default class NavBar extends Component {
             )
         })
     }
-    
+
     render() {
         return (
             <div>
@@ -83,7 +83,7 @@ export default class NavBar extends Component {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mr-auto navbar-links">
                         <li className="nav-item">
-                            <Link to = {'/'}>
+                            <Link to = {'/'} className="nav-link">
                                 Home
                             </Link>
                         </li>

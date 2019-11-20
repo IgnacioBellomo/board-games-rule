@@ -81,4 +81,22 @@
 
  }
 
+ .single-boardgame {
+   height: 33vh;
+ }
+
+ .single-boardgame img {
+   height: 70%;
+ }
+ .single-boardgame h3 {
+  font-size: 1.2em;
+}
+.single-boardgame h5 {
+  font-size: 1em;
+}
+
+.homepage-banner{
+  text-align: left;
+}
+
 
