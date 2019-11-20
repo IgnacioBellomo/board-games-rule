@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/board-game-rules/static/css/main.f81377cf.chunk.css",
+    "main.js": "/board-game-rules/static/js/main.61c75fab.chunk.js",
+    "main.js.map": "/board-game-rules/static/js/main.61c75fab.chunk.js.map",
+    "runtime-main.js": "/board-game-rules/static/js/runtime-main.d35de435.js",
+    "runtime-main.js.map": "/board-game-rules/static/js/runtime-main.d35de435.js.map",
+    "static/css/2.833dd627.chunk.css": "/board-game-rules/static/css/2.833dd627.chunk.css",
+    "static/js/2.6aa9213c.chunk.js": "/board-game-rules/static/js/2.6aa9213c.chunk.js",
+    "static/js/2.6aa9213c.chunk.js.map": "/board-game-rules/static/js/2.6aa9213c.chunk.js.map",
+    "index.html": "/board-game-rules/index.html",
+    "precache-manifest.0e5224449cd13bac81b48896e43dca6c.js": "/board-game-rules/precache-manifest.0e5224449cd13bac81b48896e43dca6c.js",
+    "service-worker.js": "/board-game-rules/service-worker.js",
+    "static/css/2.833dd627.chunk.css.map": "/board-game-rules/static/css/2.833dd627.chunk.css.map",
+    "static/css/main.f81377cf.chunk.css.map": "/board-game-rules/static/css/main.f81377cf.chunk.css.map",
+    "static/media/App.css": "/board-game-rules/static/media/board_game_shelf_shelves_analog_games_01-2.1f11032f.jpg",
+    "static/media/logo.svg": "/board-game-rules/static/media/logo.25bf045c.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d35de435.js",
+    "static/css/2.833dd627.chunk.css",
+    "static/js/2.6aa9213c.chunk.js",
+    "static/css/main.f81377cf.chunk.css",
+    "static/js/main.61c75fab.chunk.js"
+  ]
+}
