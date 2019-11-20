@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import NavBar from './NavBar'
 
 export default class HomePage extends Component {
     
@@ -28,19 +27,21 @@ export default class HomePage extends Component {
                         <h1>Rulebooks for everyone.</h1>
                         <p>Don't pass the book, send the link!</p>      
                 </div>
-                <div className="container-fluid">
-                <div className="row">
-                    <div className="col-12">
-                        <h1>No rulebooks added yet :(</h1>
-                    </div>
-                    <div className="col-4">
-                        recent add
-                    </div>
-                    <div className="col-4">
-                        recent add
-                    </div>
-                    <div className="col-4">
-                        recent add
+                <div>
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-12">
+                                <h1>No rulebooks added yet :(</h1>
+                            </div>
+                            <div className="col-4">
+                                recent add
+                            </div>
+                            <div className="col-4">
+                                recent add
+                            </div>
+                            <div className="col-4">
+                                recent add
+                        </div>
                     </div>
                 </div>
                 </div>
