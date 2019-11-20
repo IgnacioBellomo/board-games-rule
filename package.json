@@ -2,9 +2,11 @@
   "name": "board-games-rule",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ignaciobellomo.github.io/board-game-rules",
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "gh-pages": "^2.1.1",
     "googleapis": "^39.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -15,6 +17,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

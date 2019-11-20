@@ -63,12 +63,19 @@ export default class NavBar extends Component {
 
             return (
                 <li key={eachGame} className="search-bar-suggestion" >
-                    <Link to = {`/games/${eachGame}`} onClick={this.clearBar}>
+                    <Link to = {`/search/${eachGame}`} onClick={this.clearBar}>
                         {eachGame}
                     </Link>
                 </li>
             )
         })
+    }
+
+    formSubmition = () => {
+        if (this.state.searchBarText.length > 0){
+            console.log(this.state.searchBarText);
+            this.props.history.push(`/search/${this.state.searchBarText}`)
+        }
     }
 
     render() {
@@ -91,7 +98,7 @@ export default class NavBar extends Component {
                             <a className="nav-link" href="#">About</a>
                         </li>
                         </ul>
-                        <form className="form-inline my-2 my-lg-0 search-bar-form">
+                        <form className="form-inline my-2 my-lg-0 search-bar-form" onSubmit={this.formSubmition}>
                         <input className="form-control mr-sm-2 search-bar" type="search" value={this.state.searchBarText} onChange={this.searchBar} placeholder="Search for a game" aria-label="Search"/>
                         {this.state.searchBarResults &&
                             <div className="auto-complete">

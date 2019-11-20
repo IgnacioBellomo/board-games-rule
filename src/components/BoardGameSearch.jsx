@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { throwStatement } from '@babel/types';
+import { Link } from 'react-router-dom'
+
 
 export default class BoardGameSearch extends Component {
     
@@ -46,9 +48,9 @@ export default class BoardGameSearch extends Component {
             return (
                 <div className="col-4 single-boardgame">
                     <img src={game.image_url} />
-                    <h3>{game.name}</h3>
-                    <h5>{game.year_published}</h5>
-
+                    <Link to={`/${game.name}`} gameID={game.id}>
+                        <h3>{game.name}</h3>
+                    </Link>
                 </div>
             )
 

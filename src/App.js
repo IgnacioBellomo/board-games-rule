@@ -6,6 +6,7 @@ import TestAPIResults from './testAPIResults';
 import {Switch, Route} from 'react-router-dom';
 import NavBar from './components/NavBar';
 import BoardGameSearch from './components/BoardGameSearch';
+import BoardGame from './components/BoardGame';
 
 function App() {
 
@@ -19,10 +20,16 @@ function App() {
         <Route exact path="/" render = {()=>
         <HomePage/>}/>
 
-        <Route exact path="/games/:id" render = {(props)=>
+        <Route exact path="/search/:id" render = {(props)=>
         <BoardGameSearch
           {...props}
         />}/>
+
+        <Route exact path="/:id" render = {(props) => 
+        <BoardGame 
+          {...props}
+          />}/>
+
       </Switch>
       
     </div>
