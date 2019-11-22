@@ -66,9 +66,11 @@ export default class BoardGameSearch extends Component {
     render() {
         if (this.state.theGame) {
             return (
-                <div className="container-fluid">
-                    <div className="row">
-                        {this.showAllGames()}
+                <div className="search-results-body">
+                    <div className="container-fluid">
+                        <div className="row">
+                            {this.showAllGames()}
+                        </div>
                     </div>
                 </div>
             )

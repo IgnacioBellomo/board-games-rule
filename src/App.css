@@ -80,7 +80,7 @@
 }
 
 
-.jumbotron{
+.jumbotron-image{
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
   color: white;
@@ -95,9 +95,75 @@
   text-align: center;
 }
 
-.jumbotron p {
+.jumbo-relative {
+  position: relative;
+  bottom: 80px;
+}
+
+.jumbotron-image p {
   font-size: 1.1em;
 }
+
+.boardgame-img img{
+  margin-top: 40px;
+  width: 400px;
+  max-height: 500px;
+}
+
+.boardgame-img {
+  max-height: 500px;
+}
+
+.game-desc {
+  text-align: left;
+}
+
+.boardgame-info{
+  margin-top: 40px;
+  text-align: left;
+}
+
+.please-give-rules img{
+  height: 10px;
+  width: 10px;
+}
+
+.page-info{
+  text-align: left;
+  width: 100%;
+}
+
+.page-info h4{
+  text-align: left;
+}
+.page-info img{
+  width: 15px;
+  height: 15px;
+}
+
+.error-body { 
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8yOS8xMiKqq3kAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAABHklEQVRIib2Vyw6EIAxFW5idr///Qx9sfG3pLEyJ3tAwi5EmBqRo7vHawiEEERHS6x7MTMxMVv6+z3tPMUYSkfTM/R0fEaG2bbMv+Gc4nZzn+dN4HAcREa3r+hi3bcuu68jLskhVIlW073tWaYlQ9+F9IpqmSfq+fwskhdO/AwmUTJXrOuaRQNeRkOd5lq7rXmS5InmERKoER/QMvUAPlZDHcZRhGN4CSeGY+aHMqgcks5RrHv/eeh455x5KrMq2yHQdibDO6ncG/KZWL7M8xDyS1/MIO0NJqdULLS81X6/X6aR0nqBSJcPeZnlZrzN477NKURn2Nus8sjzmEII0TfMiyxUuxphVWjpJkbx0btUnshRihVv70Bv8ItXq6Asoi/ZiCbU6YgAAAABJRU5ErkJggg==);
+  height: 90vh;
+  display: flex;
+}
+.error-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+.error-actions {
+  margin-top:15px;
+  margin-bottom:15px;
+}
+.error-actions .btn { 
+  margin-right:10px; 
+}
+
+.search-results-body {
+  margin-top: 20px;
+}
+
+
+
 
 @media (max-width: 768px) {
 
@@ -121,15 +187,15 @@
     background-color: white;
   }
 
-  .jumbotron{
+  .jumbotron-image{
     width: 70%;
   }
-  .jumbotron h1 {
+  .jumbotron-image h1 {
     font-size: 1.7em;
     font-weight: bold;
   }
 
-  .jumbotron p {
+  .jumbotron-image p {
     font-size: 1em;
   }
 
@@ -143,5 +209,8 @@
   /* width: 100%; */
 }
 
+.boardgame-img img{
+  width: 200px;
+}
 }
 
