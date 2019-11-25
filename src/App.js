@@ -20,10 +20,17 @@ class App extends React.Component {
         searchBarResults: null,
         atlasAccountToken: null,
         user: null,
-        propsHistory: ""
+        propsHistory: "",
+        userListID: null,
+        userList: null,
     }
   }
 
+  // componentDidUpdate(){
+  //   if (this.state.user){
+  //     this.getUserList();
+  //   }
+  // }
 
   searchBar = (e) => {
       this.setState({
@@ -50,6 +57,7 @@ class App extends React.Component {
         searchBarResults: null,
     })
   }
+
 
 
   showSuggestions = () => {
@@ -100,7 +108,10 @@ class App extends React.Component {
     })
 }
 
+
+
 getUserData = () => {
+  console.log('getting user data')
     const config = {
         headers: {
           Authorization: `Bearer ${this.state.atlasAccountToken}`
@@ -108,16 +119,86 @@ getUserData = () => {
       }   
     axios.get('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/user/data?client_id=snrWFZ0nvl', config)
     .then((res) => {
+      this.getUserListID(res.data.user.username)
         this.setState({
             user: res.data.user,
-        }, () => {
-            console.log(this.state.user.username);
         })
     })
     .catch((err) => {
         console.log(err);
     })
 }
+
+getUserListID = (username) => { 
+  console.log('getting user list');
+  axios.get(`https://www.boardgameatlas.com/api/lists?username=${username}&client_id=snrWFZ0nvl`)
+  .then((res) => {
+    console.log(res);
+    let list = null;
+    for (let i = 0; i < res.data.lists.length; i++){
+      if (res.data.lists[i].name === "Your Rulebooks"){
+        list = res.data.lists[i].id;
+      }
+    }
+      this.setState({
+          userListID: list,
+      }, () => {
+          console.log(this.state.userListID);
+          this.getUserList(this.state.userListID)
+      })
+  })
+  .catch((err) => {
+      console.log(err);
+  })
+}
+
+getUserList = (id) => {
+  axios.get(`https://www.boardgameatlas.com/api/search?list_id=${id}&client_id=snrWFZ0nvl`)
+  .then((res) => {
+    this.setState({
+      userList: res.data.games,
+    })
+  })
+}
+
+createList = () => {
+  let body = {
+    "name": "Your Rulebooks"
+  }; 
+const config = {
+  headers: {
+    'Authorization': `Bearer ${this.state.atlasAccountToken}`,
+  }
+}   
+axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=SB1VGnDv7M', qs.stringify(body), config)
+  .then((res) => {
+    this.addGameToList(res.data.list.id, 'OIXt3DmJU0')
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+}
+
+addGameToList = (listID, gameID) => {
+  let body = {
+    "list_id": listID,
+    "game_id": gameID
+  }; 
+const config = {
+  headers: {
+    'Authorization': `Bearer ${this.state.atlasAccountToken}`,
+  }
+}   
+axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists/add?client_id=SB1VGnDv7M', qs.stringify(body), config)
+  .then((res) => {
+    console.log(res.data);
+    this.getUserList(listID);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+}
+
 
 
 
@@ -139,6 +220,8 @@ getUserData = () => {
             getUserData = {this.getUserData}
             atlasAccountToken = {this.state.atlasAccountToken}
             user = {this.state.user}
+            userList = {this.state.userList}
+            createList = {this.createList}
             />}/>
   
             <Route exact path="/search/:id" render = {(props)=>

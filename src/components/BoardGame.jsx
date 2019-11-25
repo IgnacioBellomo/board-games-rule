@@ -7,6 +7,16 @@ import ReactHtmlParser from 'react-html-parser';
 export default class BoardGame extends Component {
     state = {
         formEmail: "",
+        requestMade: false,
+        game: null,
+    }
+    
+    componentDidMount () {
+        if (this.props.location.state){
+            this.setState({
+                game: this.props.location.state.gameInfo,
+            })
+        }
     }
 
     updateEmail = (e) => {
@@ -28,7 +38,10 @@ export default class BoardGame extends Component {
             rulesRequest.date = `${date} : ${time}`;
         }
         axios.post('https://ironrest.herokuapp.com/ignacio', rulesRequest)
-        .then((res) => {
+        .then(() => {
+            this.setState({
+                requestMade: true,
+            })
             console.log('request made');
         })
         .catch((err) => {
@@ -36,16 +49,15 @@ export default class BoardGame extends Component {
         })
     }
     render() {
+        console.log(this.state);
         let game;
-        if (this.props.location.state){
-            game = this.props.location.state.gameInfo;
+        if (this.state.game){
+            game = this.state.game;
             return (
                 <div>
                     <div className="container-fluid">
                         <div className="row">
-                            <div className="col-0 col-lg-1">
-                            </div>
-                            <div className="col-6 col-lg-5 boardgame-img">
+                            <div className="col-6 boardgame-img">
                                 <img src={game.image_url} alt={'image of ' + game.name}/>
                             </div>
                             <div className="col-6 boardgame-info">
@@ -53,39 +65,36 @@ export default class BoardGame extends Component {
                                 <h3>({game.year_published})</h3>
                                 <div className="large-screen">
                                     <h4>Description:</h4>
-                                    <p>{ReactHtmlParser (game.description) }</p>
+                                    <div>{ReactHtmlParser (game.description) }</div>
                                 </div>
                             </div>
-                            <div className="col-12 col-md-6 game-rules">
-                                {game.rules_url &&
-                                    <div>
-                                        <div>
-                                            <a className="btn btn-danger" href={game.rules_url} target="_blank">Rules for {game.name}</a>
+                            {game.rules_url &&
+                                <div className="col-12 col-md-6 game-rules text-center">
+                                    <a className="btn btn-danger" href={game.rules_url} target="_blank">Rules for {game.name}</a>
+                                </div>
+                            }
+                            {!game.rules_url && !this.state.requestMade &&
+                                <div className="col-12 col-md-6 game-rules please-give-rules">
+                                    <div><b>No rules for {game.name} available.</b></div>
+                                    <div>Leave your email below to notify us and we will look into getting it for you. You will be notified via email when it's added.</div>
+                                    <br/>
+                                    <div className="form-inline">
+                                        <div className="form-group mx-sm-3 mb-2">
+                                            <input type="email" className="form-control" name="formEmail" value={this.state.formEmail} placeholder="Email" onChange={this.updateEmail}/>
                                         </div>
-                                        {/* <div>
-                                            Is our link not working? Click the button below to notify us and we will look into it!
-                                        </div>
-                                        <button type="button" className="btn btn-primary">Click me!</button> */}
+                                        <button type="submit" className="btn btn-danger mb-2 ml-1" onClick={this.notifyUs}>Submit</button>
                                     </div>
-                                }
-                                {!game.rules_url &&
-                                    <div className="please-give-rules">
-                                        <div><b>No rules for {game.name} available.</b></div>
-                                        <div>Leave your email below to notify us and we will look into getting it for you. You will be notified via email when it's added.</div>
-                                        <br/>
-                                        <form className="form-inline" onSubmit={this.notifyUs}>
-                                            <div className="form-group mx-sm-3 mb-2">
-                                                <input type="email" className="form-control" name="formEmail" value={this.state.formEmail} placeholder="Email" onChange={this.updateEmail}/>
-                                            </div>
-                                            <button type="submit" className="btn btn-danger mb-2">Submit</button>
-                                        </form>
-                                    </div>
-                                }
-                            </div>
+                                </div>
+                            }
+                            {!game.rules_url && this.state.requestMade &&
+                                <div className="col-12 col-md-6 game-rules">>
+                                    <h3>Thank you!</h3>
+                                </div> 
+                            }
 
                             <div className="col-12 col-md-8 game-desc small-screen">
                             <h4>Description:</h4>
-                                <p>{ReactHtmlParser (game.description) }</p>
+                                <div>{ReactHtmlParser (game.description) }</div>
                             </div>
                         </div>
                     </div>
