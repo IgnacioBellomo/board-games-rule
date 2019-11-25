@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Profile from './Profile';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import ReactHtmlParser from 'react-html-parser'; 
 
 export default class BoardGame extends Component {
     state = {
@@ -47,8 +48,15 @@ export default class BoardGame extends Component {
                             <div className="col-6 col-lg-5 boardgame-img">
                                 <img src={game.image_url} alt={'image of ' + game.name}/>
                             </div>
-                            <div className="col-4 boardgame-info">
-                                <h1>{game.name} <h3>({game.year_published})</h3></h1>
+                            <div className="col-6 boardgame-info">
+                                <h1>{game.name}</h1>
+                                <h3>({game.year_published})</h3>
+                                <div className="large-screen">
+                                    <h4>Description:</h4>
+                                    <p>{ReactHtmlParser (game.description) }</p>
+                                </div>
+                            </div>
+                            <div className="col-12 col-md-6 game-rules">
                                 {game.rules_url &&
                                     <div>
                                         <div>
@@ -58,11 +66,11 @@ export default class BoardGame extends Component {
                                             Is our link not working? Click the button below to notify us and we will look into it!
                                         </div>
                                         <button type="button" className="btn btn-primary">Click me!</button> */}
-                                </div>
+                                    </div>
                                 }
                                 {!game.rules_url &&
                                     <div className="please-give-rules">
-                                        <div>No rules for {game.name} available.</div>
+                                        <div><b>No rules for {game.name} available.</b></div>
                                         <div>Leave your email below to notify us and we will look into getting it for you. You will be notified via email when it's added.</div>
                                         <br/>
                                         <form className="form-inline" onSubmit={this.notifyUs}>
@@ -74,9 +82,10 @@ export default class BoardGame extends Component {
                                     </div>
                                 }
                             </div>
-                            <div className="col-12 game-desc">
+
+                            <div className="col-12 col-md-8 game-desc small-screen">
                             <h4>Description:</h4>
-                                <p>{game.description}</p>
+                                <p>{ReactHtmlParser (game.description) }</p>
                             </div>
                         </div>
                     </div>
@@ -89,10 +98,8 @@ export default class BoardGame extends Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="error-template">
-                                    <h1>
-                                        Oops!</h1>
-                                    <h2>
-                                        404 Not Found</h2>
+                                    <h1>Oops!</h1>
+                                    <h2>404 Not Found</h2>
                                     <div className="error-details">
                                         Sorry, an error has occured, Requested page not found!
                                     </div>

@@ -37,7 +37,7 @@
   margin-bottom: 0;
   top: 38px;
   right: 80px;
-  width: 400px;
+  width: 300px !important;
   border-bottom: 1px solid gray;
   border-left: 1px solid gray;
   border-right: 1px solid gray;
@@ -52,9 +52,10 @@
 .auto-complete li{
   list-style-type: none;
   text-align: left;
+  text-decoration: underline;
 }
 .search-bar {
-  width: 400px !important;
+  width: 300px !important;
 }
 
  .single-boardgame {
@@ -106,12 +107,12 @@
 
 .boardgame-img img{
   margin-top: 40px;
-  width: 400px;
-  max-height: 500px;
+  max-width: 400px;
+  max-height: 400px;
 }
 
 .boardgame-img {
-  max-height: 500px;
+  height: 500px;
 }
 
 .game-desc {
@@ -162,16 +163,23 @@
   margin-top: 20px;
 }
 
+.game-rules{
+  text-align: left;
+}
+
+.large-screen {
+  display: block;
+}
+
+.small-screen {
+  display: none;
+}
 
 
-
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
   .navbar-links li{
     text-align: left;
-  }
-  .search-bar {
-    width: 300px !important;
   }
 
   .auto-complete{
@@ -180,7 +188,6 @@
     margin-bottom: 0;
     top: 46px;
     left: 1px;
-    width: 300px !important;
     border-bottom: 1px solid gray;
     border-left: 1px solid gray;
     border-right: 1px solid gray;
@@ -212,5 +219,44 @@
 .boardgame-img img{
   width: 200px;
 }
+
+.boardgame-img {
+  height: 350px;
+}
+
+.boardgame-info h1{
+  font-size: 2em;
+  text-align: center;
+}
+
+.boardgame-info h3{
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.game-rules{
+  text-align: left;
+}
+
+.large-screen {
+  display: none;
+}
+
+.small-screen {
+  display: block
+}
+}
+
+@media (max-width: 768px) {
+  .page-info {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .page-info h3 {
+    text-align: center;
+  }
+
+  
 }
 

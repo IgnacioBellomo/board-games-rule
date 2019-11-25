@@ -31,8 +31,7 @@ export default function NavBar (props) {
                                     {props.showSuggestions()}
                                 </ul>
                             </div>
-                            }
-                            
+                            }       
                             <button className="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
                         </form>
                     </div>
