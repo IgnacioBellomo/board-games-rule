@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Profile from './Profile';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 export default class BoardGame extends Component {
     state = {
@@ -12,6 +13,25 @@ export default class BoardGame extends Component {
             [e.target.name] : e.target.value,
         }, () => {
             console.log(this.state.formEmail)
+        })
+    }
+
+    notifyUs = () => {
+        let rulesRequest = {};
+        let today = new Date();
+        let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        if (this.state.formEmail.length > 0){
+            rulesRequest.formEmail = this.state.formEmail;
+            rulesRequest.gameId = this.props.location.state.gameInfo.id;
+            rulesRequest.date = `${date} : ${time}`;
+        }
+        axios.post('https://ironrest.herokuapp.com/ignacio', rulesRequest)
+        .then((res) => {
+            console.log('request made');
+        })
+        .catch((err) => {
+            console.log(err);
         })
     }
     render() {
@@ -45,7 +65,7 @@ export default class BoardGame extends Component {
                                         <div>No rules for {game.name} available.</div>
                                         <div>Leave your email below to notify us and we will look into getting it for you. You will be notified via email when it's added.</div>
                                         <br/>
-                                        <form className="form-inline">
+                                        <form className="form-inline" onSubmit={this.notifyUs}>
                                             <div className="form-group mx-sm-3 mb-2">
                                                 <input type="email" className="form-control" name="formEmail" value={this.state.formEmail} placeholder="Email" onChange={this.updateEmail}/>
                                             </div>

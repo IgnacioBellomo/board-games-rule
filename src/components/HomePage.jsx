@@ -28,54 +28,6 @@ export default class HomePage extends Component {
         })
     }
 
-    // atlasLogin = () => {
-    //     let token = queryString.parse(this.props.history.location.search).code;
-    //     let body = {
-    //     'client_id' : 'snrWFZ0nvl',
-    //     'client_secret' : '0cd69e59d15381b3109efa7c5d2d730b',
-    //     'code' : token,
-    //     'redirect_uri' : 'http://localhost:3000/',
-    //     'grant_type' : 'authorization_code'
-    //     }; 
-    //   const config = {
-    //     headers: {
-    //       'Content-Type': 'application/x-www-form-urlencoded'
-    //     }
-    //   }   
-    //   axios.post('https://www.boardgameatlas.com/oauth/token', qs.stringify(body), config)
-    //     .then((result) => {
-    //         // console.log(result);
-    //         this.setState({
-    //             atlasAccountToken: result.data.access_token,
-    //         }, () => {
-    //             console.log(this.state.atlasAccountToken);
-    //             this.getUserData();
-    //         })
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     })
-    // }
-
-    // getUserData = () => {
-    //     const config = {
-    //         headers: {
-    //           Authorization: `Bearer ${this.state.atlasAccountToken}`
-    //         }
-    //       }   
-    //     axios.get('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/user/data?client_id=snrWFZ0nvl', config)
-    //     .then((res) => {
-    //         this.setState({
-    //             user: res.data.user,
-    //         }, () => {
-    //             console.log(this.state.user.username);
-    //         })
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     })
-    // }
-
     render() {
         return (
             <div>
