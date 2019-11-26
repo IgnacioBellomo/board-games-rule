@@ -148,13 +148,13 @@ export default class BoardGame extends Component {
                             </div>
                             <div className="col-8 boardgame-info">
                                 <div className="row">
-                                    <div className="col-12 col-md-5">
+                                    <div className="col-10 offset-1 col-md-5 offset-md-0">
                                         <h1>{game.name}</h1>
                                         <h3>({game.year_published})</h3>
                                         <div className="game-data">
                                             <span className="text-center">{game.min_players} - {game.max_players} players</span>
                                             <span className="text-center">Playtime: {game.min_playtime} - {game.max_playtime} minutes</span>
-                                    </div>
+                                        </div>
                                     </div>
                                     <div className="col-10 offset-1 col-md-6 offset-md-0 game-data">
                                         <h6 className="text-center">Mechanics</h6>

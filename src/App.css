@@ -201,6 +201,7 @@
 .game-data{
   border: 1px solid black;
   background-color: lightgray;
+  margin-bottom: 10px;
 }
 
 .game-data span{
