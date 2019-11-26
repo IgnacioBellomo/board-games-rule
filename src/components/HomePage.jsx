@@ -72,7 +72,7 @@ export default class HomePage extends Component {
                             <div className="col-12 col-md-4 page-info">
                                 <h3>Ready to go?</h3> 
                                 <div>Click the button below to sign in and enjoy all of the benefits of Board Game Atlas</div>
-                                    <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=http://localhost:3000/&state=wtf" className="badge badge-secondary">Connect to BGA</a>
+                                    <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=https://board-games-rule.herokuapp.com/&state=wtf" className="badge badge-secondary">Connect to BGA</a>
                                 <div>You can navigate our site and access rulebooks without logging in, but you will not be able to create a rulebook list.</div>
                             </div>
                         </div>
