@@ -81,6 +81,7 @@ class App extends React.Component {
   }
 
   atlasLogin = (search) => {
+    console.log('atlasLogin')
     let token = queryString.parse(search).code;
     let body = {
     'client_id' : 'snrWFZ0nvl',
@@ -99,7 +100,6 @@ class App extends React.Component {
         this.setState({
             atlasAccountToken: result.data.access_token,
         }, () => {
-            console.log(this.state.atlasAccountToken);
             this.getUserData();
         })
     })
@@ -133,7 +133,6 @@ getUserListID = (username) => {
   console.log('getting user list');
   axios.get(`https://www.boardgameatlas.com/api/lists?username=${username}&client_id=snrWFZ0nvl`)
   .then((res) => {
-    console.log(res);
     let list = null;
     for (let i = 0; i < res.data.lists.length; i++){
       if (res.data.lists[i].name === "Your Rulebooks"){
@@ -143,7 +142,6 @@ getUserListID = (username) => {
       this.setState({
           userListID: list,
       }, () => {
-          console.log(this.state.userListID);
           this.getUserList(this.state.userListID)
       })
   })
@@ -161,23 +159,28 @@ getUserList = (id) => {
   })
 }
 
-createList = () => {
-  let body = {
-    "name": "Your Rulebooks"
-  }; 
-const config = {
-  headers: {
-    'Authorization': `Bearer ${this.state.atlasAccountToken}`,
+createList = (gameId) => {
+  if (this.state.userListID){
+    this.addGameToList(this.state.userListID, gameId);
+  } else {
+    let body = {
+      "name": "Your Rulebooks"
+    }; 
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${this.state.atlasAccountToken}`,
+    }
+  }   
+  axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=SB1VGnDv7M', qs.stringify(body), config)
+    .then((res) => {
+      this.addGameToList(res.data.list.id, gameId)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
-}   
-axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=SB1VGnDv7M', qs.stringify(body), config)
-  .then((res) => {
-    this.addGameToList(res.data.list.id, 'OIXt3DmJU0')
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-}
+  }
+
 
 addGameToList = (listID, gameID) => {
   let body = {
@@ -232,6 +235,9 @@ axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/a
             <Route exact path="/search/:name/:id" render = {(props) => 
             <BoardGame 
               {...props}
+              user = {this.state.user}
+              createList = {this.createList}
+              userList = {this.state.userList}
               />}/>
           </Switch>
   

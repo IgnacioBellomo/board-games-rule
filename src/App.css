@@ -107,7 +107,7 @@
 
 .boardgame-img img{
   margin-top: 40px;
-  max-width: 400px;
+  max-width: 280px;
   max-height: 400px;
 }
 
@@ -164,7 +164,7 @@
 }
 
 .game-rules{
-  text-align: left;
+  margin-top: 20px;
 }
 
 .large-screen {
@@ -184,11 +184,32 @@
     text-align: left;
 }
 
-.rulebook-list li {
-  list-style: none;
+.rulebook-link  {
   text-decoration: underline;
 }
 
+.game-name{
+  font-size: 2.5em;
+  margin: 5px;
+}
+.game-year{
+  font-size: 1.4em;
+  font-weight: bold;
+  margin: 5px;
+}
+
+.game-data{
+  border: 1px solid black;
+  background-color: lightgray;
+}
+
+.game-data span{
+  display: block;
+}
+
+.rules-header{
+  color: black;
+}
 
 
 @media (max-width: 900px) {
@@ -232,7 +253,7 @@
 }
 
 .boardgame-img img{
-  width: 200px;
+  width: 150px;
 }
 
 .boardgame-img {
@@ -257,6 +278,10 @@
 
 .small-screen {
   display: block
+}
+
+.game-rules a{
+  font-size: 0.98em;
 }
 }
 

@@ -22,14 +22,14 @@ export default class HomePage extends Component {
         if(this.props.userList){
             return this.props.userList.map(game => {
                 return (
-                    <li>
+                    <div className={"rulebook-link col-6 text-left key="+game.id}>
                         <Link to={{
                             pathname: `/search/${game.name}/${game.id}`,
                             state: {
                                 gameInfo: game
                             }
                             }}>{game.name}</Link>
-                    </li>
+                    </div>
                 )
             })
         }
@@ -43,7 +43,6 @@ export default class HomePage extends Component {
 
 
     render() {
-        console.log(this.props.userList);
         return (
             <div>
                 <div className="homepage-banner">
@@ -79,7 +78,7 @@ export default class HomePage extends Component {
                         }
                         {this.props.user && 
                         <div className="row">
-                            <div className="col-6 page-info">
+                            <div className="col-12 col-md-6 page-info">
                                 <h1>You are logged in as: {this.props.user.username}</h1> 
                                 {this.props.userList &&
                                     <button type="button" className="btn btn-danger" onClick={this.toggleGamesList}>
@@ -91,20 +90,23 @@ export default class HomePage extends Component {
                                         <div>
                                             Create a list to keep all of your rulebooks in one place!
                                         </div>
-                                        <button type="button" className="btn btn-danger" onClick={this.props.createList}>
-                                            Create List
-                                        </button>
+                                        <div>
+                                            Search for a rulebook you'd like to store and click the Add to List button to get your list started.
+                                        </div>
                                     </div>
                                 }
                             </div>
                             {this.state.showGamesList &&
-                                <div className="col-6 rulebook-list">
+                                <div className="col-12 col-md-6 rulebook-list">
                                     <button type="button" className="close float-right" aria-label="Close" onClick={this.toggleGamesList}>
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <ul>
+                                    <div className="row">
+                                    <div className="col-12">
+                                        <h3 className="text-left mb-1 rules-header">Your Rulebooks</h3>
+                                    </div>
                                         {this.gamesList()}
-                                    </ul>
+                                    </div>     
                                 </div>
                             }
                         </div>

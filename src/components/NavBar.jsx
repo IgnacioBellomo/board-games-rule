@@ -19,9 +19,6 @@ export default function NavBar (props) {
                                 Home
                             </Link>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">About</a>
-                        </li>
                         </ul>
                         <form className="form-inline my-2 my-lg-0 search-bar-form" onSubmit={props.formSubmition}>
                             <input className="form-control mr-sm-2 search-bar" type="search" value={props.searchBarText} onChange={props.searchBar} placeholder="Search for a rulebook" aria-label="Search"/>
