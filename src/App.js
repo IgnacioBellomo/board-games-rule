@@ -87,7 +87,7 @@ class App extends React.Component {
     'client_id' : 'snrWFZ0nvl',
     'client_secret' : '0cd69e59d15381b3109efa7c5d2d730b',
     'code' : token,
-    'redirect_uri' : 'http://localhost:3000/',
+    'redirect_uri' : 'https://board-games-rule.herokuapp.com/',
     'grant_type' : 'authorization_code'
     }; 
   const config = {
