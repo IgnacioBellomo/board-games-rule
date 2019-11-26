@@ -22,7 +22,8 @@ export default class HomePage extends Component {
         if(this.props.userList){
             return this.props.userList.map(game => {
                 return (
-                    <div className={"rulebook-link col-6 text-left key="+game.id}>
+                    <div className={`rulebook-link col-6 text-left key=${game.id}`}>
+                    <img src={game.images.thumb} alt="image of the game"/>
                         <Link to={{
                             pathname: `/search/${game.name}/${game.id}`,
                             state: {
