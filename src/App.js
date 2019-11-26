@@ -10,6 +10,7 @@ import axios from 'axios';
 import {Link} from 'react-router-dom'
 import queryString from 'query-string';
 import qs from 'querystring';
+import {myHistory} from './index.js'
 
 class App extends React.Component {
 
@@ -25,12 +26,6 @@ class App extends React.Component {
         userList: null,
     }
   }
-
-  // componentDidUpdate(){
-  //   if (this.state.user){
-  //     this.getUserList();
-  //   }
-  // }
 
   searchBar = (e) => {
       this.setState({
@@ -76,7 +71,7 @@ class App extends React.Component {
   formSubmition = (e) => {
       e.preventDefault();
       if (this.state.searchBarText.length > 0){
-          this.props.history.push(`/search/${this.state.searchBarText}`)
+          myHistory.push(`/search/${this.state.searchBarText}`)
       }
   }
 
@@ -206,6 +201,7 @@ axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/a
 
 
   render(){
+    console.log(myHistory)
     return (
       <div className="App">
       <NavBar {...this.props}
