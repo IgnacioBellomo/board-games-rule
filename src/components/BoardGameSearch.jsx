@@ -49,14 +49,16 @@ export default class BoardGameSearch extends Component {
             return words.every(word => otherWords.includes(word))
         }).map((game) => {
             return (
-                <div className="col-4 single-boardgame rulebook-link" key={game.id}>
-                    <img src={game.image_url} alt={'image of ' + game.name}/>
-                    <Link to={{
-                        pathname: `/search/${game.name}/${game.id}`,
-                        state: {
-                            gameInfo: game
-                        }
-                        }}><h3>{game.name}</h3></Link>
+                <div className="col-6 col-md-4 single-boardgame" key={game.id}>
+                    <div className="rulebook-link">
+                        <img src={game.image_url} alt={'image of ' + game.name}/>
+                        <Link to={{
+                            pathname: `/search/${game.name}/${game.id}`,
+                            state: {
+                                gameInfo: game
+                            }
+                            }}><h3>{game.name}</h3></Link>
+                    </div>
                 </div>
             )
 
