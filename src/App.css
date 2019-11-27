@@ -63,7 +63,10 @@
 }
 
  .single-boardgame {
-   height: 33vh;
+   height: 40vh;
+   border: 1px solid rgb(228, 225, 225);
+   border-radius: 5px;
+   margin: 5px;
  }
 
  .single-boardgame img {
