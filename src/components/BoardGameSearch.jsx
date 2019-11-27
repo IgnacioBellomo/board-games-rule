@@ -29,8 +29,9 @@ export default class BoardGameSearch extends Component {
     }
     
     gameInfo = () => {
-        axios.get(`https://www.boardgameatlas.com/api/search?name=${this.props.match.params.id}&client_id=snrWFZ0nvl`)
+        axios.get(`https://www.boardgameatlas.com/api/search?client_id=snrWFZ0nvl&name=${this.props.match.params.id}`)
         .then((res) => {
+            console.log(res)
             this.setState({theGame: res.data.games})
         })
     }

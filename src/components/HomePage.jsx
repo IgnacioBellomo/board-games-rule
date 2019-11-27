@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import {Link} from 'react-router-dom'
+import GameList from './GameList';
+
 
 export default class HomePage extends Component {
     
@@ -19,20 +21,37 @@ export default class HomePage extends Component {
         }
     }
     gamesList = () => {
-        if(this.props.userList){
-            return this.props.userList.map(game => {
-                return (
-                    <div className={`rulebook-link col-6 text-left key=${game.id}`}>
-                    <img src={game.images.thumb} alt="image of the game"/>
-                        <Link to={{
-                            pathname: `/search/${game.name}/${game.id}`,
-                            state: {
-                                gameInfo: game
-                            }
-                            }}>{game.name}</Link>
-                    </div>
-                )
-            })
+        if(this.props.gameList){
+            if (this.props.gameList > 10) {
+                let choppedList = this.props.gameList.slice(0,10);
+                return choppedList.map(game => {
+                    return (
+                        <div className={`rulebook-link col-6 text-left key=${game.id}`}>
+                        <img src={game.images.thumb} alt="image of the game"/>
+                            <Link to={{
+                                pathname: `/search/${game.name}/${game.id}`,
+                                state: {
+                                    gameInfo: game
+                                }
+                                }}>{game.name}</Link>
+                        </div>
+                    )
+                })
+            } else {
+                return this.props.gameList.map(game => {
+                    return (
+                        <div className={`rulebook-link col-6 text-left key=${game.id}`}>
+                        <img src={game.images.thumb} alt="image of the game"/>
+                            <Link to={{
+                                pathname: `/search/${game.name}/${game.id}`,
+                                state: {
+                                    gameInfo: game
+                                }
+                                }}>{game.name}</Link>
+                        </div>
+                    )
+                })
+            }
         }
     }
 
@@ -44,13 +63,33 @@ export default class HomePage extends Component {
 
 
     render() {
+        if (this.props.user){
+            return (
+                <GameList
+                {...this.props}
+                gameList = {this.props.gameList}
+                user = {this.props.user}
+                removeGame = {this.props.removeGame}
+                gameListID = {this.props.gameListID}  
+                />
+            )
+        } else {
         return (
             <div>
                 <div className="homepage-banner">
                 </div>
                 <div className="jumbotron-image">
-                        <h1>Rulebooks for everyone.</h1>
-                        <p>Don't pass the book, send the link!</p>      
+                {!this.props.history.location.search.includes('code') &&
+                <div>
+                    <h1>Rulebooks for everyone.</h1>
+                    <p>Don't pass the book, send the link!</p>  
+                </div>
+                }
+                {this.props.history.location.search.includes('code') &&
+                    <div>
+                        <h1>Loading...</h1>
+                    </div>
+                }
                 </div>
                 <div className="jumbo-relative">
                     <div className="container">
@@ -72,7 +111,7 @@ export default class HomePage extends Component {
                             <div className="col-12 col-md-4 page-info">
                                 <h3>Ready to go?</h3> 
                                 <div>Click the button below to sign in and enjoy all of the benefits of Board Game Atlas</div>
-                                    <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=https://board-games-rule.herokuapp.com/&state=wtf" className="badge badge-secondary">Connect to BGA</a>
+                                    <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=http://localhost:3000/&state=wtf" className="badge badge-secondary">Connect to BGA</a>
                                 <div>You can navigate our site and access rulebooks without logging in, but you will not be able to create a rulebook list.</div>
                             </div>
                         </div>
@@ -81,12 +120,12 @@ export default class HomePage extends Component {
                         <div className="row">
                             <div className="col-12 col-md-6 page-info">
                                 <h1>You are logged in as: {this.props.user.username}</h1> 
-                                {this.props.userList &&
+                                {this.props.gameList &&
                                     <button type="button" className="btn btn-danger" onClick={this.toggleGamesList}>
                                         View your rulebooks
                                     </button>
                                 }
-                                {!this.props.userList &&
+                                {!this.props.gameList &&
                                     <div>
                                         <div>
                                             Create a list to keep all of your rulebooks in one place!
@@ -103,10 +142,18 @@ export default class HomePage extends Component {
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     <div className="row">
-                                    <div className="col-12">
-                                        <h3 className="text-left mb-1 rules-header">Your Rulebooks</h3>
-                                    </div>
+                                        <div className="col-12">
+                                            <h3 className="text-left mb-1 rules-header">Your Rulebooks</h3>
+                                        </div>
                                         {this.gamesList()}
+                                        {this.props.gameList.length > 10 &&
+                                            <div className="col-12 text-center">
+                                                <Link to={{
+                                                    pathname: `/mylist`
+                                                }}>See your full list</Link>
+                                            </div>
+                                        }
+
                                     </div>     
                                 </div>
                             }
@@ -116,5 +163,6 @@ export default class HomePage extends Component {
                 </div>
             </div>
         )
+    }
     }
 }
