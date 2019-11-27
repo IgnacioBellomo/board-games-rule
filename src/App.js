@@ -34,7 +34,7 @@ class App extends React.Component {
           searchBarText: e.target.value,
       }, () => {
           if (this.state.searchBarText.length > 0){
-              axios.get(`https://www.boardgameatlas.com/api/game-names?client_id=snrWFZ0nvl&limit=10&name=${this.state.searchBarText}`)
+              axios.get(`https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/game-names?client_id=snrWFZ0nvl&limit=10&name=${this.state.searchBarText}`)
               .then((theResult) => {
                   this.setState({
                       searchBarResults: theResult.data.names,
