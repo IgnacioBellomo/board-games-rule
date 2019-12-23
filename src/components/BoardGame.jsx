@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import ReactHtmlParser from 'react-html-parser'; 
@@ -53,6 +53,7 @@ export default class BoardGame extends Component {
                 this.setState({
                     mechanics: mechanics,
                     notOnList: notOnList,
+                    mechanicsExist: mechanics.length > 0,
                 })
             })
             .catch((err) => {
@@ -67,7 +68,7 @@ export default class BoardGame extends Component {
         return this.state.mechanics.map((mechanic) => {
             return (
                 <span className="col-6 text-left">
-                    {mechanic}
+                    <b>{mechanic}</b>
                 </span>
             )
         })
@@ -127,15 +128,15 @@ export default class BoardGame extends Component {
                                     }
                                     {!game.rules_url && !this.state.requestMade &&
                                         <div className="col-12 game-rules please-give-rules">
-                                            <div><b>No rules for {game.name} available.</b></div>
-                                            <div>Leave your email below to notify us and we will look into getting it for you. You will be notified via email when it's added.</div>
+                                            <div><b>Rulebook is unavailable.</b></div>
+                                            {/* <div>Leave your email below to notify us and we will look into getting it for you. You will be notified via email when it's added.</div>
                                             <br/>
                                             <div className="form-inline">
                                                 <div className="form-group mx-sm-3 mb-2">
                                                     <input type="email" className="form-control" name="formEmail" value={this.state.formEmail} placeholder="Email" onChange={this.updateEmail}/>
                                                 </div>
                                                 <button type="submit" className="btn btn-danger mb-2 ml-1" onClick={this.notifyUs}>Submit</button>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     }
                                     {!game.rules_url && this.state.requestMade &&
@@ -147,20 +148,63 @@ export default class BoardGame extends Component {
                             </div>
                             <div className="col-8 boardgame-info">
                                 <div className="row">
-                                    <div className="col-10 offset-1 col-md-5 offset-md-0">
-                                        <h1>{game.name}</h1>
-                                        <h3>({game.year_published})</h3>
-                                        <div className="game-data">
-                                            <span className="text-center">{game.min_players} - {game.max_players} players</span>
-                                            <span className="text-center">Playtime: {game.min_playtime} - {game.max_playtime} minutes</span>
+                                    {this.state.mechanicsExist &&
+                                        <Fragment>
+                                        <div className="col-10 offset-1 col-md-5 offset-md-0">
+                                            <h1>{game.name}</h1>
+                                            {game.year_published &&
+                                                <h3>
+                                                    ({game.year_published})
+                                                </h3>
+                                            }
+                                            {(game.min_players || game.min_playtime) &&
+                                                <div className="game-data">
+                                                    {game.min_players && game.max_players &&
+                                                        <span className="text-center">
+                                                            {game.min_players} - {game.max_players} players
+                                                        </span>
+                                                    }
+                                                    {game.min_playtime && game.max_playtime &&
+                                                        <span className="text-center">
+                                                            Playtime: {game.min_playtime} - {game.max_playtime} minutes
+                                                        </span>
+                                                    }
+                                                </div>
+                                            }
                                         </div>
-                                    </div>
-                                    <div className="col-10 offset-1 col-md-6 offset-md-0 game-data">
-                                        <h6 className="text-center">Mechanics</h6>
-                                        <div className="row">
-                                            {this.showMechanics()}
+                                        <div className="col-10 offset-1 col-md-6 offset-md-0 game-data">
+                                            <h6 className="text-center">Mechanics</h6>
+                                            <div className="row">
+                                                {this.showMechanics()}
+                                            </div>
                                         </div>
-                                    </div>
+                                        </Fragment>
+                                    }
+                                    {!this.state.mechanicsExist &&
+                                        <div className="col-10 offset-1 col-md-12 offset-md-0">
+                                            <h1>{game.name}</h1>
+                                            {game.year_published &&
+                                                <h3>
+                                                    ({game.year_published})
+                                                </h3>
+                                            }
+                                            {(game.min_players || game.min_playtime) &&
+                                                <div className="game-data">
+                                                    {game.min_players && game.max_players &&
+                                                        <span className="text-center">
+                                                            {game.min_players} - {game.max_players} players
+                                                        </span>
+                                                    }
+                                                    {game.min_playtime && game.max_playtime &&
+                                                        <span className="text-center">
+                                                            Playtime: {game.min_playtime} - {game.max_playtime} minutes
+                                                        </span>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+
                                 </div>
 
                                 <div className="large-screen game-desc">
