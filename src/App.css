@@ -2,8 +2,9 @@
   text-align: center;
 }
 
-/body {
-  background-color: rgb(241, 241, 241)
+body {
+  background-color: rgb(241, 241, 241);
+  overflow: hidden;
 }
 
 .App-logo {
@@ -106,7 +107,7 @@
 
 .jumbo-relative {
   position: relative;
-  bottom: 80px;
+  bottom: 100px;
 }
 
 .jumbotron-image p {
@@ -228,6 +229,13 @@
   color: black;
 }
 
+@media (max-width: 1268px) {
+  body {
+    overflow: scroll;
+  }
+}
+
+
 
 @media (max-width: 900px) {
 
@@ -249,6 +257,7 @@
 
   .jumbotron-image{
     width: 70%;
+    margin-top: 20px;
   }
   .jumbotron-image h1 {
     font-size: 1.7em;
@@ -261,48 +270,52 @@
 
   .homepage-banner {
     height: 250px;
- }
+  }
 
  .single-boardgame img {
   height: 45%;
   max-width: 105%;
   /* width: 100%; */
+  }
+
+  .boardgame-img img{
+    width: 130px;
+  }
+
+  .boardgame-img {
+    height: 350px;
+  }
+
+  .boardgame-info h1{
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  .boardgame-info h3{
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+
+
+  .large-screen {
+    display: none;
+  }
+
+  .small-screen {
+    display: block
+  }
+
+  .game-rules a{
+    font-size: 0.98em;
+  }
+
+  .jumbo-relative{
+    bottom: 100px;
+  }
 }
 
-.boardgame-img img{
-  width: 130px;
-}
-
-.boardgame-img {
-  height: 350px;
-}
-
-.boardgame-info h1{
-  font-size: 1.5em;
-  text-align: center;
-}
-
-.boardgame-info h3{
-  font-size: 1.5em;
-  text-align: center;
-}
-
-
-
-.large-screen {
-  display: none;
-}
-
-.small-screen {
-  display: block
-}
-
-.game-rules a{
-  font-size: 0.98em;
-}
-}
-
-@media (max-width: 768px) {
+@media (max-width: 500px) {
   .page-info {
     text-align: center;
     margin-bottom: 50px;
@@ -310,6 +323,10 @@
 
   .page-info h3 {
     text-align: center;
+  }
+
+  .jumbo-relative{
+    bottom: 150px;
   }
 
   
