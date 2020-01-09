@@ -90,14 +90,7 @@ router.post('/update-profile', isLoggedIn, async (req, res, next) => {
 
 
 router.post('/login', passport.authenticate('local'), async (req, res, next) => {
-  const user = await User.findById(req.user._id)
-    .populate('movieList.movie')
-    .populate('movieList.review')
-    .populate('friends')
-    .populate('requests.user')
-    .populate('feed.review')
-    // .populate('showList.movie')
-    // .populate('showList.review')
+  const user = await User.findById(req.user._id);
   res.status(200).json(user);
 });
 

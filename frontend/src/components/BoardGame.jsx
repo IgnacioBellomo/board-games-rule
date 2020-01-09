@@ -5,11 +5,9 @@ import ReactHtmlParser from 'react-html-parser';
 
 export default class BoardGame extends Component {
     state = {
-        formEmail: "",
-        requestMade: false,
         game: null,
         mechanics: [],
-        notOnList: null,
+        onList: null,
     }
     
     componentDidMount () {
@@ -18,28 +16,26 @@ export default class BoardGame extends Component {
                 game: this.props.location.state.gameInfo,
             }, () => {
                 this.mechanics();
-                this.notOnList();
             })
         }
     }
 
-    updateEmail = (e) => {
-        this.setState({
-            [e.target.name] : e.target.value,
-        }, () => {
-        })
-    }
-
     mechanics = () => {
-        let notOnList = true;
+        let onList = false;
+        let oneTime = false;
         if (this.state.game){
+            if (this.state.game.min_playtime && this.state.game.min_playtime == this.state.game.max_playtime){
+                oneTime = true;
+            }
             if (this.props.userList){
                 this.props.userList.forEach((item) => {
                     if (item.id === this.state.game.id) {
-                        notOnList = false;
+                        onList = false;
+                        console.log('Game is on list')
                     }
                 })
             }
+            console.log('Game is not on list');
             let mechanics = [];
             axios.get('https://www.boardgameatlas.com/api/game/mechanics?client_id=snrWFZ0nvl')
             .then((res) => {
@@ -52,14 +48,14 @@ export default class BoardGame extends Component {
                 });
                 this.setState({
                     mechanics: mechanics,
-                    notOnList: notOnList,
+                    onList: onList,
                     mechanicsExist: mechanics.length > 0,
+                    oneTime: oneTime,
                 })
             })
             .catch((err) => {
                 console.log(err)
             })
-
         }
         
     }
@@ -71,35 +67,6 @@ export default class BoardGame extends Component {
                     <b>{mechanic}</b>
                 </span>
             )
-        })
-    }
-
-
-    notifyUs = () => {
-        let rulesRequest = {};
-        let today = new Date();
-        let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-        if (this.state.formEmail.length > 0){
-            rulesRequest.formEmail = this.state.formEmail;
-            rulesRequest.gameId = this.props.location.state.gameInfo.id;
-            rulesRequest.date = `${date} : ${time}`;
-        }
-        axios.post('https://ironrest.herokuapp.com/ignacio', rulesRequest)
-        .then(() => {
-            this.setState({
-                requestMade: true,
-            })
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }
-
-    notOnList = () => {
-
-        this.setState({
-
         })
     }
 
@@ -120,23 +87,18 @@ export default class BoardGame extends Component {
                                                 <a className="btn btn-danger mb-2" href={game.rules_url} target="_blank">How to Play</a>
                                             </div>
                                             <div>
-                                                {this.props.user && this.state.notOnList &&
+                                                {this.props.user && !this.state.onList &&
                                                     <button className="btn btn-secondary" onClick={() => {this.props.createList(game.id)}}>Add to list</button>
-                                                }  
+                                                }
+                                                {this.props.user && this.state.onList &&
+                                                    <span className="btn btn-secondary">Added</span>
+                                                }
                                             </div>
                                         </div>
                                     }
                                     {!game.rules_url && !this.state.requestMade &&
                                         <div className="col-12 game-rules please-give-rules">
                                             <div><b>Rulebook is unavailable.</b></div>
-                                            {/* <div>Leave your email below to notify us and we will look into getting it for you. You will be notified via email when it's added.</div>
-                                            <br/>
-                                            <div className="form-inline">
-                                                <div className="form-group mx-sm-3 mb-2">
-                                                    <input type="email" className="form-control" name="formEmail" value={this.state.formEmail} placeholder="Email" onChange={this.updateEmail}/>
-                                                </div>
-                                                <button type="submit" className="btn btn-danger mb-2 ml-1" onClick={this.notifyUs}>Submit</button>
-                                            </div> */}
                                         </div>
                                     }
                                     {!game.rules_url && this.state.requestMade &&
@@ -195,7 +157,12 @@ export default class BoardGame extends Component {
                                                             {game.min_players} - {game.max_players} players
                                                         </span>
                                                     }
-                                                    {game.min_playtime && game.max_playtime &&
+                                                    {game.min_playtime && this.state.oneTime &&
+                                                        <span className="text-center">
+                                                            Playtime: {game.max_playtime} minutes
+                                                        </span>
+                                                    }
+                                                    {game.min_playtime && !this.state.oneTime &&
                                                         <span className="text-center">
                                                             Playtime: {game.min_playtime} - {game.max_playtime} minutes
                                                         </span>

@@ -259,8 +259,9 @@ body {
   }
 
   .jumbotron-image{
+    position: relative;
     width: 70%;
-    top: 180px;
+    top: -120px;
   }
   .jumbotron-image h1 {
     font-size: 1.7em;

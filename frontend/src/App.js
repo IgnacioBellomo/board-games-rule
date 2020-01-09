@@ -29,11 +29,18 @@ class App extends React.Component {
         propsHistory: "",
         gameListID: null,
         gameList: null,
+        loggingIn: false,
     }
   }
 
   componentDidMount() {
     this.updateData();
+  }
+
+  componentDidUpdate() {
+    if (!this.state.searchBarText.length > 0 && this.state.searchBarResults){
+      this.clearBar();
+    }
   }
 
   updateData = async () => {
@@ -45,9 +52,7 @@ class App extends React.Component {
         console.log('Error code ' + user.data.error)
       })
     } else {
-      this.setState({
-        user: user.data
-      })
+      this.setUser(user.data)
     }
   }
 
@@ -57,23 +62,20 @@ class App extends React.Component {
         user: user,
         gameList: null,
       })
-    } else {
+    } else if (user.username){
+      this.getUserList(this.state.gameListID);
+    }else {
+      await this.setState({
+        loggingIn: true,
+      })
       let gamesList = await this.getUserGameList(user.gamesList);
       this.setState({
         user: user,
         gameList: gamesList,
+        loggingIn: false,
       })
     }
 }
-
-  getUserGameList = async (list) => {
-    let gameList = [];
-    for (let id of list){
-      let game = await axios.get(`https://www.boardgameatlas.com/api/search?ids=${id}&client_id=snrWFZ0nvl`)
-      gameList.push(game.games[0]);
-    }
-    return gameList;
-  }
 
   logOut = async () => {
     await actions.logOut();
@@ -81,23 +83,18 @@ class App extends React.Component {
     myHistory.push('/');
   }
 
-  searchBar = (e) => {
-      this.setState({
+  searchBar = async (e) => {
+      await this.setState({
           searchBarText: e.target.value,
-      }, () => {
-          if (this.state.searchBarText.length > 0){
-              axios.get(`https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/game-names?client_id=snrWFZ0nvl&limit=10&name=${this.state.searchBarText}`)
-              .then((theResult) => {
-                  this.setState({
-                      searchBarResults: theResult.data.names,
-                  })
-              })
-          } else {
-              this.setState({
-                  searchBarResults: null,
-              })
-          }
       })
+      if (this.state.searchBarText.length > 0){
+          let results = await axios.get(`https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/game-names?client_id=snrWFZ0nvl&limit=10&name=${this.state.searchBarText}`);
+          this.setState({
+              searchBarResults: results.data.names,
+          })
+      } else {
+          this.clearBar();
+      }
   }
 
   clearBar = () => {
@@ -120,7 +117,7 @@ class App extends React.Component {
       })
   }
 
-  formSubmition = (e) => {
+  formSubmition = async (e) => {
       e.preventDefault();
       if (this.state.searchBarText.length > 0){
           myHistory.push(`/search/${this.state.searchBarText}`)
@@ -131,6 +128,7 @@ class App extends React.Component {
 
   // REDIRECT URI: https://board-games-rule.herokuapp.com/
   atlasLogin = (search) => {
+    console.log('135 atlas log in');
     let token = queryString.parse(search).code;
     let body = {
     'client_id' : 'snrWFZ0nvl',
@@ -167,6 +165,7 @@ class App extends React.Component {
         }   
       axios.get('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/user/data?client_id=snrWFZ0nvl', config)
       .then((res) => {
+        console.log(res);
         this.getUserListID(res.data.user.username)
           this.setState({
               user: res.data.user,
@@ -202,79 +201,112 @@ getUserList = (id) => {
   .then((res) => {
     this.setState({
       gameList: res.data.games,
+    }, () => {
+      myHistory.push('/');
     })
   })
 }
 
-createList = (gameId) => {
-  if (this.state.gameListID){
-    this.addGameToList(this.state.gameListID, gameId);
+getUserGameList = async (list) => {
+  console.log(list)
+  let gameList = [];
+  for (let id of list){
+    let game = await axios.get(`https://www.boardgameatlas.com/api/search?ids=${id}&client_id=snrWFZ0nvl`)
+    gameList.push(game.data.games[0]);
+  }
+  return gameList;
+}
+
+// Creates a list if user is on BGA, else adds game to BGR list
+createList = async (gameId) => {
+  if (this.state.user.username){
+    if (this.state.gameListID){
+      this.addGameToList(this.state.gameListID, gameId);
+    } else {
+      let body = {
+        "name": "Your Rulebooks"
+      }; 
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${this.state.atlasAccountToken}`,
+      }
+    }
+    axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=snrWFZ0nvl', qs.stringify(body), config)
+      .then((res) => {
+        this.addGameToList(res.data.list.id, gameId)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
   } else {
-    let body = {
-      "name": "Your Rulebooks"
-    }; 
+    let newGamesList = await actions.addGame(gameId);
+    if (newGamesList){
+      let theNewList = await this.getUserGameList(newGamesList.data.gameList);
+      this.setState({
+        gameList: theNewList,
+      });
+  }
+  }
+
+}
+
+// BGA
+addGameToList = async (listID, gameID) => {
+  let body = {
+    "list_id": listID,
+    "game_id": gameID
+  }; 
   const config = {
     headers: {
       'Authorization': `Bearer ${this.state.atlasAccountToken}`,
     }
   }   
-  axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=snrWFZ0nvl', qs.stringify(body), config)
+  axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists/add?client_id=snrWFZ0nvl', qs.stringify(body), config)
     .then((res) => {
-      this.addGameToList(res.data.list.id, gameId)
+      console.log(res.data);
+      this.getUserList(listID);
     })
     .catch((err) => {
       console.log(err);
     })
-  }
-  }
-
-
-addGameToList = (listID, gameID) => {
-  let body = {
-    "list_id": listID,
-    "game_id": gameID
-  }; 
-const config = {
-  headers: {
-    'Authorization': `Bearer ${this.state.atlasAccountToken}`,
-  }
-}   
-axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists/add?client_id=snrWFZ0nvl', qs.stringify(body), config)
-  .then((res) => {
-    console.log(res.data);
-    this.getUserList(listID);
-  })
-  .catch((err) => {
-    console.log(err);
-  })
 }
 
-removeGame = (listID, gameID) => {
-  let body = {
-    "list_id": listID,
-    "game_id": gameID,
-  }; 
-  const config = {
-    headers: {
-      'Authorization': `Bearer ${this.state.atlasAccountToken}`,
-    }
-  } 
-  axios.delete('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=snrWFZ0nvl', qs.stringify(body), config)
-  .then((res) => {
-    console.log(res.data);
-    this.getUserList(listID);
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-
+removeGame = async (listID, gameID) => {
+  if (this.state.user.username){
+    let body = {
+      "list_id": listID,
+      "game_id": gameID,
+    }; 
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${this.state.atlasAccountToken}`,
+      }
+    } 
+    axios.delete('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=snrWFZ0nvl', qs.stringify(body), config)
+    .then((res) => {
+      console.log(res.data);
+      this.getUserList(listID);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  } else {
+    let newGamesList = await actions.removeGame(gameID);
+    if (newGamesList) {
+      let theNewList = await this.getUserGameList(newGamesList.data.gameList)
+    await this.setState({
+      gameList: theNewList,
+    });
+  }
+    myHistory.push('/');
+  }
 }
 
 
 
 
   render(){
-    console.log(this.state.user);
     return (
       <div className="App">
         <NavBar {...this.props}
@@ -299,6 +331,7 @@ removeGame = (listID, gameID) => {
           createList        = {this.createList}
           removeGame        = {this.removeGame}
           gameListID        = {this.state.gameListID}
+          loggingIn         = {this.state.loggingIn}
           />}/>
 
           <Route exact path="/search/:id" render = {(props)=>

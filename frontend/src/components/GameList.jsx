@@ -6,6 +6,7 @@ export default class GameList extends Component {
 
     gamesList = () => {
         if(this.props.gameList){
+            console.log(this.props.gameList);
             return this.props.gameList.map(game => {
                 return (
                     <div className={`col-6 col-md-4 text-center mb-5 key=${game.id}`}>
@@ -19,7 +20,7 @@ export default class GameList extends Component {
                                     <h5>{game.name}</h5>
                                     <img src={game.images.small} alt="image of the game"/>
                             </Link>
-                            <button type="button" className="badge badge-danger" onClick={() => {this.props.removeGame(this.props.gameListID, game.id, game.name)}}>Remove from list</button>
+                            <button type="button" className="btn btn-danger btn-sm mt-2" onClick={() => {this.props.removeGame(this.props.gameListID, game.id, game.name)}}>Remove from list</button>
                         </div>
                     </div>
                 )

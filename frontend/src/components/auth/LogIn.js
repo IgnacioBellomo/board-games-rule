@@ -30,7 +30,6 @@ class LogIn extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <Fragment>
                 <form onSubmit={this.handleSubmit}>

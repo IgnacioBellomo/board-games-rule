@@ -23,29 +23,14 @@ const actions = {
   validEmail: async (email) => {
     return await service.post('/validEmail', {email: email});
   },
-  addMovie: async (data) => {
-    return await service.post('/add-movie', data);
+  addGame: async (data) => {
+    return await service.post('/add-game', {gameId: data});
   },
-  updateReview: async (data) => {
-    return await service.post('/update-review', data);
-  },
-  addShow: async (data) => {
-    return await service.post('/add-show', data);
-  },
-  removeShow: async showId => {
-    return await service.post('/remove-show', {showId: showId});
-  },
-  removeMovie: async movieId => {
-    return await service.post('/remove-movie', {movieId: movieId});
+  removeGame: async (data) => {
+    return await service.post('/remove-game', {gameId: data});
   },
   findUsers: async email => {
     return await service.post('/find-users', {email: email});
-  },
-  sendReq: async data => {
-    return await service.post('/send-req', data);
-  },
-  acceptReq: async data => {
-    return await service.post('/accept-req', data);
   },
   updateProfile: async data => {
     return await service.post('/update-profile', data);
@@ -53,14 +38,8 @@ const actions = {
   getUser: async data => {
     return await service.post('/get-user', data);
   },
-  removeFriend: async data => {
-    return await service.post('/remove-friend', data);
-  },
   changePassword: async data => {
     return await service.post('/change-password', data);
-  },
-  populateFeed: async data => {
-    return await service.post('/populate-feed', {feed: data});
   },
   
 };

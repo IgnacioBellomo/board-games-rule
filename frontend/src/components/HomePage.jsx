@@ -34,7 +34,7 @@ export default class HomePage extends Component {
             )
         } else {
         return (
-            <Fragment>
+            <Fragment className="position-relative">
                 <div className="homepage-banner">
                 </div>
                 <div className="jumbotron-image">
@@ -44,9 +44,9 @@ export default class HomePage extends Component {
                     <p>Don't pass the book, send the link!</p>  
                 </div>
                 }
-                {this.props.history.location.search.includes('code') &&
+                {this.props.history.location.search.includes('code') || this.props.loggingIn &&
                     <div>
-                        <h1>Loading...</h1>
+                        <h1>Fetching your lists...</h1>
                     </div>
                 }
                 </div>
