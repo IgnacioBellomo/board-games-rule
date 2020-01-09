@@ -12,7 +12,7 @@ const passport     = require('./config/passport');
 
 
 mongoose
-  .connect('mongodb://localhost/backend', {useNewUrlParser: true})
+  .connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -25,35 +25,41 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 
 const app = express();
 
-// Middleware Setup
-app.use(logger('dev'));
-app.use(bodyParser.json());
+app.use(
+  cors({
+    credentials: true,
+    origin: [process.env.FRONTENDPOINT]
+  })
+);
+
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: true,
+    secret: process.env.SECRET,
+    cookie: { maxAge: 1000 * 60 * 60 }
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, '../frontend/build')))
+// app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
-
-// Express View engine setup
-
-app.use(require('node-sass-middleware')({
-  src:  path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  sourceMap: true
-}));
-      
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-
-
-
-// default value for title local
-app.locals.title = 'Express - Generated with IronGenerator';
-
+app.use(logger('dev'));
 
 
 const index = require('./routes/index');
+const auth = require('./routes/auth');
+
 app.use('/', index);
+app.use('/', auth);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
+})
 
 
 module.exports = app;

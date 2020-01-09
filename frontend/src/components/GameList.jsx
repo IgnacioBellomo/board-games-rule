@@ -33,7 +33,12 @@ export default class GameList extends Component {
                 <div className="container">
                     <div className="row">
                     <div className="col-12">
-                        <h1>Welcome, {this.props.user.username}</h1>
+                        {this.props.user.username &&
+                            <h1>Welcome, {this.props.user.username}</h1>
+                        }
+                        {this.props.user.firstName &&
+                            <h1>Welcome, {this.props.user.firstName}</h1>
+                        }  
                         <h3 className="text-center mb-5">Your rulebooks</h3>
                     </div> 
                         {this.gamesList()}
@@ -45,7 +50,12 @@ export default class GameList extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            <h1>Welcome, {this.props.user.username}</h1>
+                            {this.props.user.username &&
+                                <h1>Welcome, {this.props.user.username}</h1>
+                            }
+                            {this.props.user.firstName &&
+                                <h1>Welcome, {this.props.user.firstName}</h1>
+                            }  
                         </div>
                         <div className="col-12">
                             <div>

@@ -10,6 +10,9 @@ import {Link} from 'react-router-dom'
 import queryString from 'query-string';
 import qs from 'querystring';
 import {myHistory} from './index.js'
+import actions from './services/index';
+import LogIn from './components/auth/LogIn';
+import SignUp from './components/auth/SignUp';
 
 
 
@@ -27,6 +30,55 @@ class App extends React.Component {
         gameListID: null,
         gameList: null,
     }
+  }
+
+  componentDidMount() {
+    this.updateData();
+  }
+
+  updateData = async () => {
+    let user = await actions.isLoggedIn();
+    if (user.data.error && (!this.state.user || !this.state.user.username)){
+      this.setState({
+        user: null
+      }, () => {
+        console.log('Error code ' + user.data.error)
+      })
+    } else {
+      this.setState({
+        user: user.data
+      })
+    }
+  }
+
+  setUser = async (user) => {
+    if (!user || !user.firstName || user.gamesList.length < 1){
+      this.setState({
+        user: user,
+        gameList: null,
+      })
+    } else {
+      let gamesList = await this.getUserGameList(user.gamesList);
+      this.setState({
+        user: user,
+        gameList: gamesList,
+      })
+    }
+}
+
+  getUserGameList = async (list) => {
+    let gameList = [];
+    for (let id of list){
+      let game = await axios.get(`https://www.boardgameatlas.com/api/search?ids=${id}&client_id=snrWFZ0nvl`)
+      gameList.push(game.games[0]);
+    }
+    return gameList;
+  }
+
+  logOut = async () => {
+    await actions.logOut();
+    await this.setUser(null);
+    myHistory.push('/');
   }
 
   searchBar = (e) => {
@@ -56,10 +108,8 @@ class App extends React.Component {
   }
 
 
-
   showSuggestions = () => {
       return this.state.searchBarResults.map((eachGame) => {
-
           return (
               <li key={eachGame} className="search-bar-suggestion" >
                   <Link to = {`/search/${eachGame}`} onClick={this.clearBar}>
@@ -78,13 +128,15 @@ class App extends React.Component {
       this.clearBar();
   }
 
+
+  // REDIRECT URI: https://board-games-rule.herokuapp.com/
   atlasLogin = (search) => {
     let token = queryString.parse(search).code;
     let body = {
     'client_id' : 'snrWFZ0nvl',
     'client_secret' : '0cd69e59d15381b3109efa7c5d2d730b',
     'code' : token,
-    'redirect_uri' : 'https://board-games-rule.herokuapp.com/',
+    'redirect_uri' : 'http://localhost:3000/',
     'grant_type' : 'authorization_code'
     }; 
   const config = {
@@ -103,27 +155,27 @@ class App extends React.Component {
     .catch((err) => {
       console.log(err);
     })
-}
+  }
 
 
 
-getUserData = () => {
-    const config = {
-        headers: {
-          Authorization: `Bearer ${this.state.atlasAccountToken}`
-        }
-      }   
-    axios.get('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/user/data?client_id=snrWFZ0nvl', config)
-    .then((res) => {
-      this.getUserListID(res.data.user.username)
-        this.setState({
-            user: res.data.user,
-        })
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-}
+  getUserData = () => {
+      const config = {
+          headers: {
+            Authorization: `Bearer ${this.state.atlasAccountToken}`
+          }
+        }   
+      axios.get('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/user/data?client_id=snrWFZ0nvl', config)
+      .then((res) => {
+        this.getUserListID(res.data.user.username)
+          this.setState({
+              user: res.data.user,
+          })
+      })
+      .catch((err) => {
+          console.log(err);
+      })
+  }
 
 getUserListID = (username) => { 
   axios.get(`https://www.boardgameatlas.com/api/lists?username=${username}&client_id=snrWFZ0nvl`)
@@ -222,45 +274,60 @@ removeGame = (listID, gameID) => {
 
 
   render(){
+    console.log(this.state.user);
     return (
       <div className="App">
-      <NavBar {...this.props}
-      formSubmition = {this.formSubmition}
-      showSuggestions = {this.showSuggestions}
-      clearBar = {this.clearBar}
-      searchBar = {this.searchBar}
-      searchBarText = {this.state.searchBarText}
-      searchBarResults = {this.state.searchBarResults}
-      user = {this.state.user}
-      gameList = {this.state.gameList}
-      />
-          <Switch>
-            <Route exact path="/" render = {(props)=>
-            <HomePage {...props} 
-            atlasLogin = {this.atlasLogin}
-            getUserData = {this.getUserData}
-            atlasAccountToken = {this.state.atlasAccountToken}
-            user = {this.state.user}
-            gameList = {this.state.gameList}
-            createList = {this.createList}
-            removeGame = {this.removeGame}
-            gameListID = {this.state.gameListID}
+        <NavBar {...this.props}
+        formSubmition     = {this.formSubmition}
+        showSuggestions   = {this.showSuggestions}
+        clearBar          = {this.clearBar}
+        searchBar         = {this.searchBar}
+        searchBarText     = {this.state.searchBarText}
+        searchBarResults  = {this.state.searchBarResults}
+        user              = {this.state.user}
+        gameList          = {this.state.gameList}
+        logOut            = {this.logOut}
+        />
+        <Switch>
+          <Route exact path="/" render = {(props)=>
+          <HomePage {...props} 
+          atlasLogin        = {this.atlasLogin}
+          getUserData       = {this.getUserData}
+          atlasAccountToken = {this.state.atlasAccountToken}
+          user              = {this.state.user}
+          gameList          = {this.state.gameList}
+          createList        = {this.createList}
+          removeGame        = {this.removeGame}
+          gameListID        = {this.state.gameListID}
+          />}/>
+
+          <Route exact path="/search/:id" render = {(props)=>
+          <BoardGameSearch
+            {...props}
+          />}/>
+
+          <Route exact path="/search/:name/:id" render = {(props) => 
+          <BoardGame 
+            {...props}
+            user        = {this.state.user}
+            createList  = {this.createList}
+            gameList    = {this.state.gameList}
+            removeGame  = {this.removeGame}
             />}/>
-  
-            <Route exact path="/search/:id" render = {(props)=>
-            <BoardGameSearch
-              {...props}
-            />}/>
-  
-            <Route exact path="/search/:name/:id" render = {(props) => 
-            <BoardGame 
-              {...props}
-              user = {this.state.user}
-              createList = {this.createList}
-              gameList = {this.state.gameList}
-              removeGame = {this.removeGame}
-              />}/>
-          </Switch>
+
+          <Route exact path="/login" render = {(props) => 
+          <LogIn
+            {...props}
+            setUser = {this.setUser}  
+          />}/>
+
+          <Route exact path="/signup" render = {(props) => 
+          <SignUp
+            {...props}
+            setUser = {this.setUser}
+          />}/>
+          
+        </Switch>
   
         
       </div>

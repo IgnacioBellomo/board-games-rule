@@ -5,6 +5,15 @@ const passport = require('../config/passport');
 const isLoggedIn    = require('../middleware');
 
 
+
+
+//return await service.get('/is-logged-in');
+router.get('/is-logged-in', isLoggedIn, async (req, res, next) => {
+  const user = await User.findById(req.user._id)
+  res.json(user);
+})
+
+
 router.post('/signup', (req, res, next) => {
   
   User.register(req.body, req.body.password)
@@ -77,18 +86,6 @@ router.post('/update-profile', isLoggedIn, async (req, res, next) => {
     response = await User.findByIdAndUpdate(req.user._id, {email: req.body.email});
   }
   res.json(response);
-})
-
-
-//return await service.get('/is-logged-in');
-router.get('/is-logged-in', isLoggedIn, async (req, res, next) => {
-  const user = await User.findById(req.user._id)
-    .populate('movieList.movie')
-    .populate('movieList.review')
-    .populate('friends')
-    .populate('requests.user')
-    .populate('feed.review')
-  res.json(user);
 })
 
 

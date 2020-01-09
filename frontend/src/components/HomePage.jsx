@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {Link} from 'react-router-dom'
 import GameList from './GameList';
 
@@ -19,46 +19,6 @@ export default class HomePage extends Component {
             })
         }
     }
-    gamesList = () => {
-        if(this.props.gameList){
-            if (this.props.gameList > 10) {
-                let choppedList = this.props.gameList.slice(0,10);
-                return choppedList.map(game => {
-                    return (
-                        <div className={`rulebook-link col-6 text-left key=${game.id}`}>
-                        <img src={game.images.thumb} alt="image of the game"/>
-                            <Link to={{
-                                pathname: `/search/${game.name}/${game.id}`,
-                                state: {
-                                    gameInfo: game
-                                }
-                                }}>{game.name}</Link>
-                        </div>
-                    )
-                })
-            } else {
-                return this.props.gameList.map(game => {
-                    return (
-                        <div className={`rulebook-link col-6 text-left key=${game.id}`}>
-                        <img src={game.images.thumb} alt="image of the game"/>
-                            <Link to={{
-                                pathname: `/search/${game.name}/${game.id}`,
-                                state: {
-                                    gameInfo: game
-                                }
-                                }}>{game.name}</Link>
-                        </div>
-                    )
-                })
-            }
-        }
-    }
-
-    toggleGamesList = () => {
-        this.setState({
-            showGamesList: !this.state.showGamesList
-        })
-    }
 
 
     render() {
@@ -74,7 +34,7 @@ export default class HomePage extends Component {
             )
         } else {
         return (
-            <div>
+            <Fragment>
                 <div className="homepage-banner">
                 </div>
                 <div className="jumbotron-image">
@@ -95,6 +55,12 @@ export default class HomePage extends Component {
                         {!this.props.user && !this.props.history.location.search.includes('code') &&
                         <div className="row">
                             <div className="col-12 col-md-4 page-info">
+                                <h3>Use us if you </h3>
+                                <div><b>- </b>Plan a first time play through of a game and no one knows the rules</div>
+                                <div><b>- </b>Enjoy reading through the rules of a game you plan to purchase before purchasing it</div>
+                                <div><b>- </b>Are confused about the game, but that one friend is hogging the rulebook</div>
+                            </div>
+                            <div className="col-12 col-md-4 page-info">
                                 <h3>All your rulebooks in one page</h3>
                                 <div><b>- </b>We are powered by <a className ="badge badge-light" href='https://www.boardgameatlas.com/'><img src={require("../boardgameatlas-logo.png")} alt="Board game atlas logo"/> Board Game Atlas</a>, a dynamic site
                                 that is constantly being updated. We have links to thousands of board game rulebooks</div>
@@ -102,16 +68,8 @@ export default class HomePage extends Component {
                                 <div></div>
                             </div>
                             <div className="col-12 col-md-4 page-info">
-                                <h3>Use BGR when:</h3>
-                                <div><b>- </b>You're confused about the game, but that one friend is hogging the rulebook</div>
-                                <div><b>- </b>Planning a first time play through of a game and no one knows the rules</div>
-                                <div><b>- </b>You're a weirdo who likes to read board game rulebooks for fun</div>
-                            </div>
-                            <div className="col-12 col-md-4 page-info">
                                 <h3>Ready to go?</h3> 
-                                <div>Click the button below to sign in and enjoy all of the benefits of Board Game Atlas</div>
-                                    <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=https://board-games-rule.herokuapp.com/&state=wtf" className="badge badge-secondary">Connect to BGA</a>
-                                <div>You can navigate our site and access rulebooks without logging in, but you will not be able to create a rulebook list.</div>
+                                <div>Click the button to log in to <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=http://localhost:3000/&state=wtf" className="badge badge-light"><img src={require("../boardgameatlas-logo.png")} alt="Board game atlas logo"/> Board Game Atlas</a> and import your game lists, Or log in to <Link to = {'/login'} className="badge badge-danger">Board Games Rule!</Link> and start creating some lists! </div>
                             </div>
                         </div>
                         }
@@ -160,7 +118,7 @@ export default class HomePage extends Component {
                         }
                     </div>
                 </div>
-            </div>
+            </Fragment>
         )
     }
     }
