@@ -77,11 +77,6 @@ export default class HomePage extends Component {
                         <div className="row">
                             <div className="col-12 col-md-6 page-info">
                                 <h1>You are logged in as: {this.props.user.username}</h1> 
-                                {this.props.gameList &&
-                                    <button type="button" className="btn btn-danger" onClick={this.toggleGamesList}>
-                                        View your rulebooks
-                                    </button>
-                                }
                                 {!this.props.gameList &&
                                     <div>
                                         <div>

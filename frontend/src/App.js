@@ -196,19 +196,15 @@ getUserListID = (username) => {
   })
 }
 
-getUserList = (id) => {
-  axios.get(`https://www.boardgameatlas.com/api/search?list_id=${id}&client_id=snrWFZ0nvl`)
-  .then((res) => {
-    this.setState({
-      gameList: res.data.games,
-    }, () => {
-      myHistory.push('/');
-    })
+getUserList = async (id) => {
+  let response = await axios.get(`https://www.boardgameatlas.com/api/search?list_id=${id}&client_id=snrWFZ0nvl`);
+  await this.setState({
+    gameList: response.data.games,
   })
+  myHistory.push('/');
 }
 
 getUserGameList = async (list) => {
-  console.log(list)
   let gameList = [];
   for (let id of list){
     let game = await axios.get(`https://www.boardgameatlas.com/api/search?ids=${id}&client_id=snrWFZ0nvl`)
@@ -219,36 +215,34 @@ getUserGameList = async (list) => {
 
 // Creates a list if user is on BGA, else adds game to BGR list
 createList = async (gameId) => {
+  let theNewList = this.state.gameList;
+  console.log(theNewList);
   if (this.state.user.username){
     if (this.state.gameListID){
-      this.addGameToList(this.state.gameListID, gameId);
+      theNewList = await this.addGameToList(this.state.gameListID, gameId);
     } else {
       let body = {
         "name": "Your Rulebooks"
       }; 
-    const config = {
-      headers: {
-        'Authorization': `Bearer ${this.state.atlasAccountToken}`,
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${this.state.atlasAccountToken}`,
+        }
       }
-    }
-    axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=snrWFZ0nvl', qs.stringify(body), config)
-      .then((res) => {
-        this.addGameToList(res.data.list.id, gameId)
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      let response = await axios.post('https://cors-anywhere.herokuapp.com/https://www.boardgameatlas.com/api/lists?client_id=snrWFZ0nvl', qs.stringify(body), config);
+      theNewList = await this.addGameToList(response.data.list.id, gameId);
     }
   } else {
     let newGamesList = await actions.addGame(gameId);
     if (newGamesList){
-      let theNewList = await this.getUserGameList(newGamesList.data.gameList);
-      this.setState({
+      theNewList = await this.getUserGameList(newGamesList.data.gameList);
+      await this.setState({
         gameList: theNewList,
       });
+    }
   }
-  }
-
+  console.log(theNewList);
+  return theNewList;
 }
 
 // BGA
@@ -294,7 +288,10 @@ removeGame = async (listID, gameID) => {
   } else {
     let newGamesList = await actions.removeGame(gameID);
     if (newGamesList) {
-      let theNewList = await this.getUserGameList(newGamesList.data.gameList)
+      let theNewList = await this.getUserGameList(newGamesList.data.gameList);
+      if (theNewList.length < 1){
+        theNewList = null;
+      }
     await this.setState({
       gameList: theNewList,
     });

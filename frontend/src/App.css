@@ -232,6 +232,10 @@ body {
   cursor: pointer;
 }
 
+.fake-button{
+  
+}
+
 @media (max-width: 1268px) {
   body {
     overflow: scroll;
