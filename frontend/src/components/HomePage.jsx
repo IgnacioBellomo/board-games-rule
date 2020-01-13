@@ -69,7 +69,7 @@ export default class HomePage extends Component {
                             </div>
                             <div className="col-12 col-md-4 page-info">
                                 <h3>Ready to go?</h3> 
-                                <div>Click the button to log in to <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=http://localhost:3000/&state=wtf" className="badge badge-light"><img src={require("../boardgameatlas-logo.png")} alt="Board game atlas logo"/> Board Game Atlas</a> and import your game lists, Or log in to <Link to = {'/login'} className="badge badge-danger">Board Games Rule!</Link> and start creating some lists! </div>
+                                <div>Click the button to log in to <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=https://board-games-rule.herokuapp.com/&state=wtf" className="badge badge-light"><img src={require("../boardgameatlas-logo.png")} alt="Board game atlas logo"/> Board Game Atlas</a> and import your game lists, Or log in to <Link to = {'/login'} className="badge badge-danger">Board Games Rule!</Link> and start creating some lists! </div>
                             </div>
                         </div>
                         }
