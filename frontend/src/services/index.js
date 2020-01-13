@@ -2,8 +2,8 @@ import axios from 'axios';
 let baseURL;
 
 process.env.NODE_ENV === 'production'
-  ? (baseURL = 'https://mymovielists.herokuapp.com/')
-  : (baseURL = 'http://localhost:4000');
+  ? (baseURL = 'https://board-games-rule.herokuapp.com/')
+  : (baseURL = 'http://localhost:3000');
 
 const service = axios.create({ withCredentials: true, baseURL });
 
