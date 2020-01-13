@@ -43,7 +43,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'frontend', 'build')))
+app.use(express.static(path.join(__dirname, '../frontend/build')))
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -58,7 +58,8 @@ app.use('/', index);
 app.use('/', auth);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'))
+  // res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
 })
 
 
