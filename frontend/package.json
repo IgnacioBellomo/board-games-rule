@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ignaciobellomo.github.io/board-game-rules",
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
@@ -22,8 +21,6 @@
     "start": "PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
