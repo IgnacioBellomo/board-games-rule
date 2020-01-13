@@ -4,13 +4,9 @@
   "description": "Website for keeping track of the games you own, and having quick access to their rulebooks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "echo --- preinstall --- && cd backend && npm install && cd ../frontend && npm install && npm run build && cd ..",
-    "start": "echo --- start --- && cd backend && npm start"
-  },
-  "engines": {
-    "node": "12.11.1"
-  },
+    "start": "cd backend && npm install && node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+    },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/IgnacioBellomo/board-game-rules.git"
