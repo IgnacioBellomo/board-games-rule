@@ -41,7 +41,7 @@ class LogIn extends Component {
                     <form className="form-signin" onSubmit={this.handleSubmit}>
                         <h1 className="mb-3 text-center"> Log in</h1>
                         <div className="social-login">
-                            <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=http://localhost:3000/&state=wtf" className="btn bga-btn btn-sm"><img src={require("../../boardgameatlas-logo.png")} alt="Board game atlas logo"/>Log in with Board Game Atlas</a>
+                            <a href="https://www.boardgameatlas.com/oauth/authorize?response_type=code&client_id=snrWFZ0nvl&redirect_uri=https://board-games-rule.herokuapp.com/&state=wtf" className="btn bga-btn btn-sm"><img src={require("../../boardgameatlas-logo.png")} alt="Board game atlas logo"/>Log in with Board Game Atlas</a>
                         </div>
                         <p className="text-center h5 mb-3"> OR  </p>
                         <input name="email" type="email" id="inputEmail" className="form-control" placeholder="Email address" onChange={this.handleChange} autofocus=""/>
