@@ -3,7 +3,7 @@ let baseURL;
 
 process.env.NODE_ENV === 'production'
   ? (baseURL = 'https://board-games-rule.herokuapp.com/')
-  : (baseURL = 'http://localhost:3000');
+  : (baseURL = 'http://localhost:4000');
 
 const service = axios.create({ withCredentials: true, baseURL });
 
