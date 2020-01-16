@@ -37,7 +37,7 @@ class LogIn extends Component {
     render() {
         return (
             <Fragment>
-                <div id="logreg-forms">
+                <div className="logreg-forms">
                     <form className="form-signin" onSubmit={this.handleSubmit}>
                         <h1 className="mb-3 text-center"> Log in</h1>
                         <div className="social-login">

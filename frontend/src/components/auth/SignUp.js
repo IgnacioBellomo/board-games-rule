@@ -137,10 +137,10 @@ class SignUp extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-10 col-md-6 offset-1 offset-md-3">
-                        <form acceptCharset="utf-8" className="form" role="form" onSubmit={this.handleSubmit}>   <legend className="white">Sign Up</legend>
+                    <div className="col-10 col-md-5 offset-1 offset-md-3 logreg-forms">
+                        <form acceptCharset="utf-8" className="form-signin" role="form" onSubmit={this.handleSubmit}>   <h1 className="mb-3 text-center">Sign Up</h1>
                             <div className="row">
-                                <div className="col-12 mb-2 col-md-6">
+                                <div className="col-12 mb-2">
                                     <input type="text" name="firstName" value={this.state.firstName} className={this.isValid('firstName').class} onChange={this.handleChange} placeholder="First Name"/>
                                     <div className="valid-feedback text-left">
                                         Looks good!
@@ -149,7 +149,7 @@ class SignUp extends Component {
                                         Field cannot be empty
                                     </div>
                                 </div>
-                                <div className="col-12 mb-2 col-md-6">
+                                <div className="col-12 mb-2">
                                     <input type="text" name="lastName" value={this.state.lastName} className={this.isValid('lastName').class} onChange={this.handleChange} placeholder="Last Name"/>
                                     <div className="valid-feedback text-left">
                                         Looks good!
