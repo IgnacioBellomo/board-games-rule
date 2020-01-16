@@ -6,7 +6,6 @@ export default class GameList extends Component {
 
     gamesList = () => {
         if(this.props.gameList){
-            console.log(this.props.gameList);
             return this.props.gameList.map(game => {
                 return (
                     <div className={`col-6 col-md-4 text-center mb-5 key=${game.id}`}>

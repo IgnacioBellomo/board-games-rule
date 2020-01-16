@@ -29,15 +29,11 @@ export default class BoardGame extends Component {
             }
             if (this.props.gameList){
                 this.props.gameList.forEach((item) => {
-                    console.log('item ',item)
-                    console.log(this.state.game.id);
                     if (item.id === this.state.game.id) {
                         onList = true;
-                        console.log('Game is on list')
                     }
                 })
             }
-            console.log('Game on list: ', onList);
             let mechanics = [];
             axios.get('https://www.boardgameatlas.com/api/game/mechanics?client_id=snrWFZ0nvl')
             .then((res) => {

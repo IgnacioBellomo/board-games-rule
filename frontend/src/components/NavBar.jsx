@@ -6,7 +6,6 @@ export default class NavBar extends Component {
         
     }
     render(){
-        console.log('52 ', this.props.searchBarResults)
         return (
             <div>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
